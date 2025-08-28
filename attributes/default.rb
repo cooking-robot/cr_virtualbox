@@ -23,10 +23,10 @@ default['virtualbox']['version'] = ''
 
 case node['platform_family']
 when 'mac_os_x'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/4.2.12/VirtualBox-4.2.12-84980-OSX.dmg'
+  default['virtualbox']['url'] = 'https://download.virtualbox.org/virtualbox/7.2.0/VirtualBox-7.2.0-170228-macOSArm64.dmg'
 when 'windows'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/4.2.12/VirtualBox-4.2.12-84980-Win.exe'
-  default['virtualbox']['version'] = Vbox::Helpers.vbox_version(node['virtualbox']['url'])
+  default['virtualbox']['url'] = 'https://download.virtualbox.org/virtualbox/7.2.0/VirtualBox-7.2.0-170228-Win.exe'
+  default['virtualbox']['version'] = nil
 when 'debian', 'rhel', 'fedora'
   default['virtualbox']['version'] = '4.3'
 end

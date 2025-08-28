@@ -10,8 +10,10 @@ module Vbox
       filename = ::File.basename(::URI.parse(url).path)
       urlbase = url.gsub("#{filename}", "")
       sha256sum = ""
-      open("#{urlbase}/SHA256SUMS").each do |line|
-        sha256sum = line.split(" ")[0] if line =~ /#{filename}/
+      URI.open("#{urlbase}SHA256SUMS") do |f|
+        f.each_line do |line|
+          sha256sum = line.split(" ")[0] if line =~ /#{filename}/
+        end
       end
       return sha256sum
     end

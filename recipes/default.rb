@@ -30,23 +30,25 @@ when 'mac_os_x'
 
 when 'windows'
 
+  include_recipe 'vcruntime::vc14'
+
   sha256sum = vbox_sha256sum(node['virtualbox']['url'])
-  win_pkg_version = node['virtualbox']['version']
+  win_pkg_version = vbox_version(node['virtualbox']['url'])
   Chef::Log.debug("Inspecting windows package version: #{win_pkg_version.inspect}")
 
-  windows_package "Oracle VM VirtualBox #{win_pkg_version}" do
+  windows_package "Oracle VirtualBox #{win_pkg_version}" do
     action :install
     source node['virtualbox']['url']
     checksum sha256sum
     installer_type :custom
-    options "-s"
+    options "--silent --ignore-reboot"
   end
 
 when 'debian'
 
   apt_repository 'oracle-virtualbox' do
-    uri 'http://download.virtualbox.org/virtualbox/debian'
-    key 'http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc'
+    uri 'https://download.virtualbox.org/virtualbox/debian'
+    key 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
     distribution node['lsb']['codename']
     components ['contrib']
   end
@@ -60,7 +62,7 @@ when 'rhel', 'fedora'
     description "#{node['platform_family']} $releasever - $basearch - Virtualbox" 
     baseurl "http://download.virtualbox.org/virtualbox/rpm/#{node['platform_family']}/$releasever/$basearch"
     gpgcheck true
-    gpgkey 'http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc'
+    gpgkey 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
   end
 
   package "VirtualBox-#{node['virtualbox']['version']}"
